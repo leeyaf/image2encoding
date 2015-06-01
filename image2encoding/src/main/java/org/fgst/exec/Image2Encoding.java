@@ -16,19 +16,23 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * 黑色 -16777216 白色-1
  */
 public class Image2Encoding {
+	private static Log log = LogFactory.getLog(Image2Encoding.class);
 	private int fontSize = 8;
 	private static HashMap<String, Integer> map;
 
 	public static void main(String[] args) {
-		
+
 	}
 
-	public void convert(String inputfilename, String savefilename,boolean isgif) {
-		if(isgif){
+	public void convert(String inputfilename, String savefilename, boolean isgif) {
+		if (isgif) {
 			try {
 				Image2Encoding image = new Image2Encoding();
 				List<BufferedImage> images = image.openGif(inputfilename);
@@ -46,7 +50,7 @@ public class Image2Encoding {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		}else {
+		} else {
 			try {
 				Image2Encoding image = new Image2Encoding();
 				File file = new File(inputfilename);
@@ -58,30 +62,6 @@ public class Image2Encoding {
 				System.out.println(e.getMessage());
 			}
 		}
-	}
-
-	/**
-	 * 打开gif图片
-	 * @return 动态图片的帧集合
-	 */
-	public List<BufferedImage> openGif(String filename) throws IOException {
-		File file = new File(filename);
-		Iterator readers = ImageIO.getImageReadersByFormatName("gif");
-		ImageReader reader = (ImageReader) readers.next();
-		reader.setInput(ImageIO.createImageInputStream(file));
-		List<BufferedImage> images = new ArrayList<BufferedImage>();
-		for (int i = 0; true; i++) {
-			try {
-				BufferedImage bufferedImage = reader.read(i);
-				images.add(bufferedImage);
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.err.println("openGif failed: " + e.getMessage());
-
-				break;
-			}
-		}
-		return images;
 	}
 
 	/**
@@ -166,6 +146,31 @@ public class Image2Encoding {
 
 		System.out.println("draw image done!");
 		return encodingImage;
+	}
+
+	/**
+	 * 打开gif图片
+	 * 
+	 * @return 动态图片的帧集合
+	 */
+	public List<BufferedImage> openGif(String filename) throws IOException {
+		File file = new File(filename);
+		Iterator readers = ImageIO.getImageReadersByFormatName("gif");
+		ImageReader reader = (ImageReader) readers.next();
+		reader.setInput(ImageIO.createImageInputStream(file));
+		List<BufferedImage> images = new ArrayList<BufferedImage>();
+		for (int i = 0; true; i++) {
+			try {
+				BufferedImage bufferedImage = reader.read(i);
+				images.add(bufferedImage);
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.err.println("openGif failed: " + e.getMessage());
+
+				break;
+			}
+		}
+		return images;
 	}
 
 	/**
