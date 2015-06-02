@@ -90,9 +90,7 @@ public class UploadFileServlet extends HttpServlet {
 								uploadedFile.delete();
 							}
 							item.write(uploadedFile);
-							message = "上传文件成功<br/><br/>基本信息如下：<br/>文件名："
-									+ fileName + "<br/>文件类型：" + contentType
-									+ "<br/>文件大小：" + fileSize;
+							message = fieldName + "/" + fileName;
 
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -103,6 +101,7 @@ public class UploadFileServlet extends HttpServlet {
 						// 取得普通的对象（对于像文本框这种类型的使用）
 						// 对于普通类型的对象暂不做处理
 						// return ;
+						System.out.println("false");
 					}
 				}
 			}
