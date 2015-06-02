@@ -24,45 +24,42 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Image2Encoding {
 	private static Log log = LogFactory.getLog(Image2Encoding.class);
+	private HashMap<String, Integer> map;
 	private int fontSize = 8;
-	private static HashMap<String, Integer> map;
 
-	public static void main(String[] args) {
-
-	}
-
-	public void convert(String inputfilename, String savefilename, boolean isgif) {
-		if (isgif) {
-			try {
-				Image2Encoding image = new Image2Encoding();
-				List<BufferedImage> images = image.openGif(inputfilename);
-				System.out.println(images.size());
-
-				AnimatedGifEncoder encoder = new AnimatedGifEncoder();
-				encoder.setRepeat(0);
-				encoder.start(savefilename);
-
-				for (BufferedImage bufferedImage : images) {
-					BufferedImage temp = image.draw(bufferedImage);
-					encoder.addFrame(temp);
-				}
-				encoder.finish();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		} else {
-			try {
-				Image2Encoding image = new Image2Encoding();
-				File file = new File(inputfilename);
-				BufferedImage bufferedImage = ImageIO.read(file);
-				BufferedImage encodingImage = image.draw(bufferedImage);
-				File file2 = new File(savefilename);
-				ImageIO.write(encodingImage, "jpg", file2);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}
+	// public void convert(String inputfilename, String savefilename, boolean
+	// isgif) {
+	// if (isgif) {
+	// try {
+	// Image2Encoding image = new Image2Encoding();
+	// List<BufferedImage> images = image.openGif(inputfilename);
+	// System.out.println(images.size());
+	//
+	// AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+	// encoder.setRepeat(0);
+	// encoder.start(savefilename);
+	//
+	// for (BufferedImage bufferedImage : images) {
+	// BufferedImage temp = image.draw(bufferedImage);
+	// encoder.addFrame(temp);
+	// }
+	// encoder.finish();
+	// } catch (Exception e) {
+	// System.out.println(e.getMessage());
+	// }
+	// } else {
+	// try {
+	// Image2Encoding image = new Image2Encoding();
+	// File file = new File(inputfilename);
+	// BufferedImage bufferedImage = ImageIO.read(file);
+	// BufferedImage encodingImage = image.draw(bufferedImage);
+	// File file2 = new File(savefilename);
+	// ImageIO.write(encodingImage, "jpg", file2);
+	// } catch (Exception e) {
+	// System.out.println(e.getMessage());
+	// }
+	// }
+	// }
 
 	/**
 	 * 转化一个图片成编码图片
@@ -153,8 +150,7 @@ public class Image2Encoding {
 	 * 
 	 * @return 动态图片的帧集合
 	 */
-	public List<BufferedImage> openGif(String filename) throws IOException {
-		File file = new File(filename);
+	public List<BufferedImage> openGif(File file) throws IOException {
 		Iterator readers = ImageIO.getImageReadersByFormatName("gif");
 		ImageReader reader = (ImageReader) readers.next();
 		reader.setInput(ImageIO.createImageInputStream(file));
@@ -176,7 +172,7 @@ public class Image2Encoding {
 	/**
 	 * 把一个图片放大N倍
 	 */
-	private BufferedImage zoomImage(BufferedImage bufferedImage, int times) {
+	public BufferedImage zoomImage(BufferedImage bufferedImage, int times) {
 		int width = bufferedImage.getWidth() * times;
 		int height = bufferedImage.getHeight() * times;
 		BufferedImage newImage = new BufferedImage(width, height,
@@ -190,7 +186,7 @@ public class Image2Encoding {
 	/**
 	 * 把int数组转换成string数组
 	 */
-	private String[] ints2Strings(int[] ints) {
+	public String[] ints2Strings(int[] ints) {
 		String[] strings = new String[ints.length];
 		for (int i = 0; i < ints.length; i++) {
 			strings[i] = ints[i] + "";
@@ -203,7 +199,7 @@ public class Image2Encoding {
 	 * 
 	 * @return 当几个出现最多次数的元素出现的次数相等时，返回多个元素
 	 */
-	public static HashMap<String, Integer> mostEle(String[] strArray) {
+	public HashMap<String, Integer> mostEle(String[] strArray) {
 		map = new HashMap<String, Integer>();
 
 		String str = "";

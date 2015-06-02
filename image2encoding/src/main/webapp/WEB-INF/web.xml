@@ -3,5 +3,16 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <!-- ====================== servlet start ============================ -->
+
+	<servlet>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<servlet-class>org.fgst.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<url-pattern>/upload_file</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ====================== servlet end ============================ -->
 </web-app>
