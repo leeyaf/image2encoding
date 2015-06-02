@@ -2,8 +2,11 @@ package org.fgst.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +17,17 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class UploadFileServlet extends HttpServlet {
+	private static Log log = LogFactory.getLog(UploadFileServlet.class);
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// 用于存放输出的信息
-		String message = "";
+		Map<String, Object> message = new HashMap<String, Object>();
 
 		// 在自己的项目中构造出一个用于存放用户照片的文件夹
 		String projectpath = this.getServletContext().getRealPath("/images");
@@ -49,11 +56,7 @@ public class UploadFileServlet extends HttpServlet {
 				// 如果接收到的参数不是一个普通表单(例text等)的元素，那么执行下面代码
 				if (!item.isFormField()) {
 					String fieldName = item.getFieldName();// 获得此表单元素的name属性
-					System.out.println("fieldName is:" + fieldName);
 					String fileName = item.getName();// 获得文件的完整路径
-					System.out.println("fileName is:" + fileName);
-					String contentType = item.getContentType();// 获得文件类型
-					long fileSize = item.getSize();// 获得文件大小
 					// 从文件的完整路径中截取出文件名
 					fileName = fileName.substring(
 							fileName.lastIndexOf("\\") + 1, fileName.length());
@@ -66,8 +69,8 @@ public class UploadFileServlet extends HttpServlet {
 						String extName = fileName.substring(
 								fileName.indexOf("."), fileName.length());
 						if (allImgExt.indexOf(extName + "|") == -1) {
-							message = "该文件类型不允许上传。请上传 " + allImgExt
-									+ " 类型的文件，当前文件类型为" + extName;
+							message.put("error", "该文件类型不允许上传。请上传 " + allImgExt
+									+ " 类型的文件，当前文件类型为" + extName);
 							break;
 						}
 
@@ -77,12 +80,13 @@ public class UploadFileServlet extends HttpServlet {
 						if (!uf.exists()) {
 							uf.mkdir();
 						}
+						String tempfilename = Long.toString(new Date()
+								.getTime()) + extName;
 						// 此输出路径为保存到数据库中photo字段的路径
-						String insertDB = filepath + "\\" + fileName;
-						System.out.println("文件路径：" + insertDB + ":"
-								+ insertDB.length());
+						String insertDB = filepath + "\\" + tempfilename;
+						log.info("文件路径：" + insertDB + ":" + insertDB.length());
 
-						File uploadedFile = new File(filepath, fileName);
+						File uploadedFile = new File(filepath, tempfilename);
 
 						try {
 							// 如果在该文件夹中已经有相同的文件，那么将其删除之后再重新创建（只适用于上传一张照片的情况）
@@ -90,11 +94,10 @@ public class UploadFileServlet extends HttpServlet {
 								uploadedFile.delete();
 							}
 							item.write(uploadedFile);
-							message = fieldName + "/" + fileName;
+							message.put("address", tempfilename);
 
 						} catch (Exception e) {
-							e.printStackTrace();
-							// return ;
+							log.error(e.getMessage());
 						}
 
 					} else {
@@ -107,11 +110,11 @@ public class UploadFileServlet extends HttpServlet {
 			}
 		} catch (FileUploadException e) {
 			// TODO Auto-generated catch block
-			message = "文件的内容过大，请上传小于4MB的文件";
-			e.printStackTrace();
+			message.put("error", "文件的内容过大，请上传小于4MB的文件");
+			log.error(e.getMessage());
 		}
 
 		req.setAttribute("message", message);
-		req.getRequestDispatcher("index.jsp").forward(req, resp);
+		req.getRequestDispatcher("convert_image").forward(req, resp);
 	}
 }

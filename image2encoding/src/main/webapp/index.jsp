@@ -26,10 +26,18 @@
 			</h3>
 		</div>
 		<!-- upload message -->
-		<c:if test="${!empty message}">
+		<c:if test="${!empty message.address}">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<img src="images/${message}" class="img-responsive center-block"
+					<img src="images/image/${message.address}" class="img-responsive center-block"
+						alt="Responsive image">
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${!empty message.encoding}">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<img src="images/encoding/${message.encoding}" class="img-responsive center-block"
 						alt="Responsive image">
 				</div>
 			</div>

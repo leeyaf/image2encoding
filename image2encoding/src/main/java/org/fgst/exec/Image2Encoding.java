@@ -64,7 +64,7 @@ public class Image2Encoding {
 	/**
 	 * 转化一个图片成编码图片
 	 */
-	public BufferedImage draw(BufferedImage bufferedImage) throws IOException {
+	public BufferedImage draw(BufferedImage bufferedImage) throws Exception {
 		if (bufferedImage.getWidth() < 100 && bufferedImage.getHeight() < 100) {
 			bufferedImage = zoomImage(bufferedImage, 6);
 		} else if (bufferedImage.getWidth() < 300
@@ -76,8 +76,7 @@ public class Image2Encoding {
 		}
 		int width = bufferedImage.getWidth();
 		int height = bufferedImage.getHeight();
-		System.out.println(width + "*" + height + "px");
-
+		
 		BufferedImage encodingImage = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = (Graphics2D) encodingImage.getGraphics();
@@ -134,14 +133,14 @@ public class Image2Encoding {
 						break;
 					}
 				} catch (Exception e) {
-					System.out.println("GET dip failed:" + e.getMessage());
+					log.error(e.getMessage());
+					continue;
 				}
 			}
 		}
 
 		graphics.dispose();
 
-		System.out.println("draw image done!");
 		return encodingImage;
 	}
 
@@ -150,7 +149,7 @@ public class Image2Encoding {
 	 * 
 	 * @return 动态图片的帧集合
 	 */
-	public List<BufferedImage> openGif(File file) throws IOException {
+	public List<BufferedImage> openGif(File file) throws Exception {
 		Iterator readers = ImageIO.getImageReadersByFormatName("gif");
 		ImageReader reader = (ImageReader) readers.next();
 		reader.setInput(ImageIO.createImageInputStream(file));
@@ -160,9 +159,7 @@ public class Image2Encoding {
 				BufferedImage bufferedImage = reader.read(i);
 				images.add(bufferedImage);
 			} catch (Exception e) {
-				// TODO: handle exception
-				System.err.println("openGif failed: " + e.getMessage());
-
+				log.error(e.getMessage());
 				break;
 			}
 		}

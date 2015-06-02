@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-  <!-- ====================== servlet start ============================ -->
+	<!-- ====================== servlet start ============================ -->
 
 	<servlet>
 		<servlet-name>UploadFileServlet</servlet-name>
@@ -14,6 +14,15 @@
 		<servlet-name>UploadFileServlet</servlet-name>
 		<url-pattern>/upload_file</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>ConvertImageServlet</servlet-name>
+		<servlet-class>org.fgst.servlet.ConvertImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConvertImageServlet</servlet-name>
+		<url-pattern>/convert_image</url-pattern>
+	</servlet-mapping>
+
 	<!-- ====================== servlet end ============================ -->
 </web-app>
