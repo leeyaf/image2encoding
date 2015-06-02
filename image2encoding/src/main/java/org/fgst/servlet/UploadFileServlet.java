@@ -113,6 +113,6 @@ public class UploadFileServlet extends HttpServlet {
 		}
 
 		req.setAttribute("message", message);
-		req.getRequestDispatcher("upload.jsp").forward(req, resp);
+		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 }

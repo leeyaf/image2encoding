@@ -13,7 +13,8 @@
 	<!-- upload image -->
 	<!-- image url -->
 	<h2>Image2Encoding</h2>
-	<form action="/image2encoding/upload_file" method="post"
+	${message}
+	<form action="/upload_file" method="post"
 		enctype="multipart/form-data">
 		<input type="file" /> <input type="submit" />
 	</form>
