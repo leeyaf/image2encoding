@@ -37,7 +37,7 @@ public class ConvertImageServlet extends HttpServlet {
 		File readFile = new File(projectpath + "\\image\\" + filename);
 		String encodingfilename = projectpath + "\\encoding\\" + filename;
 
-		if (extName == ".gif") {
+		if (".gif".equals(extName)) {
 			try {
 				List<BufferedImage> images = encoding.openGif(readFile);
 				AnimatedGifEncoder encoder = new AnimatedGifEncoder();

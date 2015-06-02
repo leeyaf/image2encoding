@@ -76,7 +76,7 @@ public class Image2Encoding {
 		}
 		int width = bufferedImage.getWidth();
 		int height = bufferedImage.getHeight();
-		
+
 		BufferedImage encodingImage = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = (Graphics2D) encodingImage.getGraphics();
