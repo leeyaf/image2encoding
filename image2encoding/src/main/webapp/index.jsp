@@ -12,8 +12,7 @@
 <body>
 	<!-- upload image -->
 	<!-- image url -->
-	<h2>Image2Encoding</h2>
-	${message}
+	<h2>Image2Encoding${message}</h2>
 	<form action="/upload_file" method="post"
 		enctype="multipart/form-data">
 		<input type="file" /> <input type="submit" />
